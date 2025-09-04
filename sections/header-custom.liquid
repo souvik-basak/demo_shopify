@@ -1,0 +1,222 @@
+{% schema %}
+{
+  "name": "Custom Header",
+  "settings": [
+    {
+      "type": "text",
+      "id": "logo_text",
+      "label": "Logo Text",
+      "default": "TISSO VISION"
+    },
+    {
+      "type": "text",
+      "id": "header_tagline",
+      "label": "Header Tagline",
+      "default": "Find the ideal gift for your loved ones."
+    },
+    {
+      "type": "text",
+      "id": "drawer_tagline",
+      "label": "Drawer Tagline",
+      "default": "Shop now and surprise your loved ones!"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "CHOOSE GIFT"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link",
+      "default": "/collections/all"
+    }
+  ]
+}
+{% endschema %}
+
+<div class="header-custom">
+  <!-- Mobile burger icon -->
+  <div class="burger" onclick="toggleDrawer(this)">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+
+  <!-- Logo centered -->
+  <div class="header-logo">{{ section.settings.logo_text }}</div>
+
+  <!-- Desktop Tagline -->
+  <div class="header-tagline desktop-only">{{ section.settings.header_tagline }}</div>
+
+  <!-- Desktop Button -->
+  <a href="{{ section.settings.button_link }}" class="header-button desktop-only">
+    {{ section.settings.button_text }}
+    <span class="arrow">→</span>
+  </a>
+</div>
+
+<!-- Mobile Drawer -->
+<div id="nav-drawer" class="nav-drawer">
+  <div class="drawer-content">
+    <div class="drawer-tagline">{{ section.settings.drawer_tagline }}</div>
+    <a href="{{ section.settings.button_link }}" class="header-button">
+      {{ section.settings.button_text }}
+      <span class="arrow">→</span>
+    </a>
+  </div>
+</div>
+
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@400&display=swap" rel="stylesheet">
+
+<style>
+/* --- Header --- */
+.header-custom {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  align-items: center;
+  padding: 15px 30px;
+  position: relative;
+  background: #fff;
+  border-bottom: 1px solid #e5e5e5;
+  z-index: 20;
+}
+
+/* Logo centered */
+.header-logo {
+  font-size: 18px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-align: center;
+  color: #000;
+}
+
+/* Header tagline */
+.header-tagline {
+  font-family: 'Jost', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 20px;
+  text-align: center;
+  color: #000;
+}
+
+/* Header button */
+.header-button {
+  font-family: 'Jost', sans-serif;
+  font-weight: bold;
+  font-size: 16px;
+  text-transform: uppercase;
+  background: #ffeb3b;
+  padding: 10px 20px;
+  color: #000;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+  overflow: hidden;
+  transition: color 0.3s ease;
+}
+
+.header-button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 100%;
+  background: #000;
+  transition: width 0.4s ease;
+  z-index: -1;
+}
+.header-button:hover::before { width: 100%; }
+.header-button:hover { color: #fff; }
+.header-button span,
+.header-button { position: relative; z-index: 1; }
+
+/* Burger icon */
+.burger {
+  display: none;
+  position: absolute;
+  left: 20px;
+  width: 24px;
+  height: 18px;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  z-index: 1100;
+}
+.burger span {
+  display: block;
+  height: 3px;
+  background: #000;
+  border-radius: 2px;
+  transition: 0.3s;
+}
+
+/* Drawer */
+.nav-drawer {
+  display: none;
+  flex-direction: column;
+  background: #f9f9f9;
+  border-bottom: 1px solid #e5e5e5;
+  padding: 20px;
+  width: 100%;
+  animation: slideDown 0.3s ease forwards;
+}
+.nav-drawer.open { display: flex; }
+.drawer-content { display: flex; flex-direction: column; align-items: center; gap: 15px; }
+.drawer-tagline { font-size: 14px; text-align: center; color: #111; }
+
+/* Animation */
+@keyframes slideDown { from { transform: translateY(-100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+/* Desktop only */
+.desktop-only { display: block; }
+
+/* Responsive: Mobile */
+@media (max-width: 768px) {
+  .desktop-only { display: none; }
+  .burger { display: flex; }
+  .header-custom {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  align-items: center;
+  padding: 15px 30px;
+  position: relative;
+  background: #fff;
+  border-bottom: 1px solid #e5e5e5;
+  z-index: 20;
+}
+}
+
+/* Large screens */
+@media (min-width: 2560px) {
+  .header-logo { font-size: 36px; }
+  .header-tagline { font-size: 28px; }
+  .header-button { font-size: 24px; padding: 15px 30px; }
+}
+</style>
+
+<script>
+function toggleDrawer(el) {
+  el.classList.toggle("open");
+  const drawer = document.getElementById("nav-drawer");
+  drawer.classList.toggle("open");
+
+  const spans = el.querySelectorAll("span");
+  if (el.classList.contains("open")) {
+    spans[0].style.transform = "rotate(45deg) translate(5px, 5px)";
+    spans[1].style.opacity = "0";
+    spans[2].style.transform = "rotate(-45deg) translate(5px, -5px)";
+  } else {
+    spans[0].style.transform = "rotate(0)";
+    spans[1].style.opacity = "1";
+    spans[2].style.transform = "rotate(0)";
+  }
+}
+</script>
